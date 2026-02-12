@@ -196,13 +196,13 @@
       no.style.transform = `scale(${noScale})`;
       no.style.opacity = `${noOpacity}`;
 
-      if (noOpacity <= 0.12) {
-        no.disabled = true;
-        no.style.cursor = "not-allowed";
-        note.textContent = "Ok basta, il NO è sparito. Rimane solo la verità 😌";
-      } else {
-        note.textContent = `NO cliccato ${clicksNo} volta/e… il SÌ si allena in palestra 💪`;
-      }
+      
+
+      if (clicksNo >= 3) {
+  no.style.display = "none";
+  note.textContent = "Ok: il NO è sparito. Rimane solo il SÌ 😌";
+}
+
     });
 
     yes.addEventListener("click", () => {
