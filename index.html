@@ -29,7 +29,7 @@
         #ffffff;
     }
     .card{
-      width:min(760px, 92vw);
+      width:min(820px, 94vw);
       padding: 34px 28px;
       border-radius: 24px;
       background: var(--card);
@@ -51,40 +51,47 @@
       font-size: 16px;
     }
 
+    /* più spazio dedicato ai pulsanti, così SÌ può crescere senza coprire */
     .arena{
       display:flex;
       align-items:center;
       justify-content:center;
-      gap: 18px;
+      gap: 20px;
       flex-wrap: wrap;
       margin-top: 8px;
+
+      min-height: 220px;         /* spazio verticale extra */
+      padding: 14px 10px 6px;    /* respiro */
     }
 
     .btn{
       border:0;
-      padding: 14px 18px;
+      /* pulsanti più grandi all'inizio */
+      padding: 18px 26px;
       border-radius: 999px;
       font-weight: 900;
+      font-size: 18px;
       cursor:pointer;
-      box-shadow: 0 12px 30px rgba(16,24,40,.18);
-      transition: transform .15s ease, opacity .2s ease, filter .2s ease;
+      box-shadow: 0 14px 34px rgba(16,24,40,.20);
+      transition: transform .16s ease, opacity .2s ease, filter .2s ease;
       user-select:none;
       line-height:1;
       will-change: transform, opacity;
     }
     .btn:active{ transform: translateY(1px) scale(0.99); }
 
+    /* base più grande già all’inizio */
     #yes{
       background: var(--yes);
       color: white;
-      transform: scale(1);
+      transform: scale(1.15);
     }
     #yes:hover{ filter: brightness(1.05); }
 
     #no{
       background: var(--no);
       color: white;
-      transform: scale(1);
+      transform: scale(1.15);
       opacity: 1;
     }
     #no:hover{ filter: brightness(1.05); }
@@ -166,8 +173,10 @@
     const closeBtn = document.getElementById("close");
 
     let clicksNo = 0;
-    let yesScale = 1;
-    let noScale = 1;
+
+    // partono già un po' grandi (coerente col CSS scale 1.15)
+    let yesScale = 1.15;
+    let noScale = 1.15;
     let noOpacity = 1;
 
     function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
@@ -175,23 +184,22 @@
     no.addEventListener("click", () => {
       clicksNo++;
 
-      // SÌ cresce
-      yesScale = clamp(yesScale + 0.18, 1, 3.4);
+      // SÌ cresce con meno click (più incremento)
+      yesScale = clamp(yesScale + 0.32, 1.15, 4.2);
       yes.style.transform = `scale(${yesScale})`;
 
-      // NO diventa meno presente: più piccolo e più trasparente
-      noScale = clamp(noScale - 0.08, 0.55, 1);
-      noOpacity = clamp(noOpacity - 0.12, 0.12, 1);
+      // NO diventa meno presente
+      noScale = clamp(noScale - 0.10, 0.50, 1.15);
+      noOpacity = clamp(noOpacity - 0.16, 0.10, 1);
       no.style.transform = `scale(${noScale})`;
       no.style.opacity = `${noOpacity}`;
 
-      // opzionale: quando è quasi invisibile, disabilitalo
-      if (noOpacity <= 0.14) {
+      if (noOpacity <= 0.12) {
         no.disabled = true;
         no.style.cursor = "not-allowed";
-        note.textContent = "Ok basta, il NO è andato in pensione.";
+        note.textContent = "Ok basta, il NO è sparito. Rimane solo la verità 😌";
       } else {
-        note.textContent = `Tentativo di NO #${clicksNo}… ma il SÌ è sempre più convincente 😅`;
+        note.textContent = `NO cliccato ${clicksNo} volta/e… il SÌ si allena in palestra 💪`;
       }
     });
 
@@ -212,4 +220,3 @@
   </script>
 </body>
 </html>
-
